@@ -1,6 +1,12 @@
 package selective
 
+brief = "Selective functors in Idris 2"
+version = 0.0.1
+readme = "README.md"
+sourceloc = "https://github.com/clayrat/idris-selective"
+bugtracker = "https://github.com/clayrat/idris-selective/issues"
+
 sourcedir = "src"
 
 modules = Control.Selective
-  , Control.Selective.Verified
+        , Control.Selective.Verified
