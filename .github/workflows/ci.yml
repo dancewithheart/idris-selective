@@ -1,34 +1,22 @@
-name: ci
+name: CI
 
 on:
   push:
   pull_request:
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   build:
+    name: Build with Idris2 latest
     runs-on: ubuntu-latest
+    container: ghcr.io/stefan-hoeck/idris2-pack:latest
 
     steps:
-      - uses: actions/checkout@v6
+      - name: Checkout
+        uses: actions/checkout@v6
 
-      - name: Install system dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y chezscheme curl gcc git libgmp-dev make
-
-      - name: Install pack
-        run: |
-          printf 'chezscheme\n' | bash -c "$(curl -fsSL https://raw.githubusercontent.com/stefan-hoeck/idris2-pack/main/install.bash)"
-
-      - name: Add pack to PATH
-        run: |
-          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
-
-      - name: Select Idris 2
-        run: |
-          pack switch latest
-          idris2 --version
-
-      - name: Build package
-        run: |
-          pack build selective.ipkg
+      - name: Build
+        run: pack build selective.ipkg
