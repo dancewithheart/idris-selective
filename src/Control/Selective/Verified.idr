@@ -2,11 +2,12 @@ module Control.Selective.Verified
 
 import Control.Selective
 import Data.Either
-import Control.Monad.Either
 
 %default total
 
-export
-interface (Selective f) => VerifiedSelective (f : Type -> Type) where
-  selectiveIdentity : {a : Type} -> {x : f a} ->
-                      select x (pure Basics.id) = either Basics.id Basics.id <$> x
+public export
+interface Selective f => VerifiedSelective (f : Type -> Type) where
+  selectiveIdentity :
+    {0 a : Type} ->
+    (x : f (Either a a)) ->
+    select x (pure Basics.id) = map (either Basics.id Basics.id) x
