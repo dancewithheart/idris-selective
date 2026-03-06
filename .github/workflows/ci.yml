@@ -1,0 +1,34 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y chezscheme curl build-essential
+
+      - name: Install pack
+        run: |
+          bash -c "$(curl -fsSL https://raw.githubusercontent.com/stefan-hoeck/idris2-pack/main/install.bash)"
+
+      - name: Add pack to PATH
+        run: |
+          echo "$HOME/.pack/bin" >> "$GITHUB_PATH"
+
+      - name: Select Idris 2
+        run: |
+          pack switch latest
+          pack info
+
+      - name: Build
+        run: |
+          pack build selective.ipkg
