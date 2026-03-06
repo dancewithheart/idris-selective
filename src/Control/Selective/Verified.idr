@@ -14,6 +14,7 @@ interface Selective f => VerifiedSelective (f : Type -> Type) where
 
   selectiveDistributivity :
     {0 a, b : Type} ->
-    (x : f (Either a b)) ->
-    (y : a -> b) ->
-    select x (pure y) = map (either y Basics.id) x
+    (x : Either a b) ->
+    (y : f (a -> b)) ->
+    (z : f (a -> b)) ->
+    select (pure x) (y *> z) = (select (pure x) y) *> (select (pure x) z)
