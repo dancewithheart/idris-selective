@@ -14,21 +14,21 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y chezscheme curl build-essential
+          sudo apt-get install -y chezscheme curl gcc git libgmp-dev make
 
       - name: Install pack
         run: |
-          bash -c "$(curl -fsSL https://raw.githubusercontent.com/stefan-hoeck/idris2-pack/main/install.bash)"
+          printf 'chezscheme\n' | bash -c "$(curl -fsSL https://raw.githubusercontent.com/stefan-hoeck/idris2-pack/main/install.bash)"
 
       - name: Add pack to PATH
         run: |
-          echo "$HOME/.pack/bin" >> "$GITHUB_PATH"
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
 
       - name: Select Idris 2
         run: |
           pack switch latest
-          pack info
+          idris2 --version
 
-      - name: Build
+      - name: Build package
         run: |
           pack build selective.ipkg
